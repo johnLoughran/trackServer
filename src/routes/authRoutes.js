@@ -1,6 +1,8 @@
 const express = require('express');
 // to use the User schema:
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
 const User = mongoose.model('User');
 
 const router = express.Router();
@@ -17,7 +19,9 @@ router.post('/signup', async (req, res) => {
 
     await user.save(); // save user, based on User Model to mongo db in the User Collection (like a db table)
 
-    res.send('You made a post request to /signup');
+    const token = jwt.sign( { userId: user._id }, 'MySecretKeyString' );
+    res.send( { token: token } );
+    // res.send('You made a post request to /signup');
   }
   catch (err) {
     // added return so that it is last thing that is done in the catch block

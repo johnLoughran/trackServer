@@ -5,7 +5,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
+const requireAuth = require('./middlewares/requireAuth');
+
 
 const app = express();
 
@@ -35,9 +37,12 @@ mongoose.connection.on('error', (err) => {
    console.error('Error connecting to mongo instance', err);
 });
 
-app.get('/', (req, res) => {
-  res.send('Hi from index.js');
+app.get('/', requireAuth, (req, res) => {
+  res.send( `Hi from index.js. Your email is: ${req.user.email}` );
 });
+// app.get('/', (req, res) => {
+//   res.send('Hi from index.js');
+// });
 
 // changed to port 3001 as port 3000 was in use, err msg, then it worked.
 app.listen( 3000, () => {
