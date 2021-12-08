@@ -12,12 +12,17 @@ router.post('/signup', async (req, res) => {
   // body is part of req, parsed by body-parser in index.js
   // console.log( 'The req.body is ', req.body );
 
-  const user = new User({ email, password });
+  try {
+    const user = new User({ email, password });
 
-  await user.save(); // save user, based on User Model to mongo db in the User Collection (like a db table)
+    await user.save(); // save user, based on User Model to mongo db in the User Collection (like a db table)
 
-
-  res.send('You made a post request to /signup');
+    res.send('You made a post request to /signup');
+  }
+  catch (err) {
+    // added return so that it is last thing that is done in the catch block
+    return res.status(422).send( err.message );
+  }
 });
 
 module.exports = router;
