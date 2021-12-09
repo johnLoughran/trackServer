@@ -1,10 +1,13 @@
 require('./models/User');
-// executes the code in User to create the userSchema, once
+require('./models/Track');
+// executes the code in User to create the userSchema, once, same with Track
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/authRoutes');
+// get trackRoutes file too, use it below
+const trackRoutes = require('./routes/trackRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
 
@@ -14,6 +17,7 @@ app.use( bodyParser.json() );
 // Enable this file (or the express object 'app') to use routes defined in authRoutes.js
 // app.use('authRoutes'); threw a TypeError: app.use() requires a middleware function error, because of quotes!
 app.use(authRoutes);
+app.use(trackRoutes);
 
 // I got the connection uri from cluod.mongodb.com, edit cluster0, connect
 // I had to replace <password> joxF3h6ovuBcvmYp
