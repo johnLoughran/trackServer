@@ -1,7 +1,6 @@
 require('./models/User');
 // executes the code in User to create the userSchema, once
 const express = require('express');
-// const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -19,7 +18,8 @@ app.use(authRoutes);
 // I got the connection uri from cluod.mongodb.com, edit cluster0, connect
 // I had to replace <password> joxF3h6ovuBcvmYp
 // const uri = "mongodb+srv://johnLoughran:<password>@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/test?retryWrites=true&w=majority";
+//const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(mongoUri); // not (mongUri, { useNewUrlParser:true etc. }), used in < v6
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });

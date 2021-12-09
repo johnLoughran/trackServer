@@ -20,7 +20,7 @@ router.post('/signup', async (req, res) => {
     await user.save(); // save user, based on User Model, to mongo db in the user Collection (like a db table)
 
     const token = jwt.sign( { userId: user._id }, 'MySecretKeyString' );
-    res.send( { token: token } );
+    res.send( { token } );
     // res.send('You made a post request to /signup'); // served as test text to display
   }
   catch (err) {
@@ -38,19 +38,26 @@ router.post('/signin', async ( req, res ) => {
   // If no email or no pwd was input return early with an error and a 422 status code "Sth went wrong"
   // 401 means access forbidden
   if( !email || !password ) {
-    return res.status(422).send( { error: { "You must enter your email and password."} } );
+    return res.status(422).send( { error: 'You must enter your email and password' } );
   }
   // find the user with that email, if none exists return vague error and code 401
-  const user = User.findOne( { email });
+  const user = await User.findOne( { email } );
   if( !user ) {
-    return res.status(401).send( { error: 'Invalid username or password' } );
+    return res.status(401).send( { error: 'Invalid username, or password' } );
   }
 
   // (else) Try to compared the pwds (this returns early if they do not match)
-  User.comparePassword( password )
-  // Make a token incorporating the user's email and secret key and send it back with the response
-
-  // If error then return with vague error and 401
+  try {
+    await user.comparePassword( password );
+    // Make a token incorporating the user's email and secret key and send it back with the response
+    const token = jwt.sign( { userId: user._id }, 'MySecretKeyString' );
+    res.send( { token } );
+    // If error then return with vague error and 401
+  }
+  // or send( err.message )
+  catch( err ) {
+    return res.status(401).send( { error: 'Invalid username or password.' } );
+  }
 
 });
 

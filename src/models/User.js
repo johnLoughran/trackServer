@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
 
 // pre save hook added to salt and hash the pwd before saving it.
 // using function(){ } instead of () => { } so that 'this' refers to the user object
-userSchema.pre('save', function() {
+// I omitted next as an arg in fn and got ref error: next is not defined.
+userSchema.pre('save', function( next ) {
   const user = this;  // rename this as user which it is anyway
 
   // if the user has not changed their password do nothing, just move on to next() (Why?)
@@ -25,7 +26,7 @@ userSchema.pre('save', function() {
 
   // else, callback invoked with an error object and the hash
   bcrypt.genSalt( 7, (err, salt) => {
-    if( err ){
+    if( err ) {
       return next( err );
     }
     // (else) , callback invoked with an error object and the hash
@@ -39,7 +40,6 @@ userSchema.pre('save', function() {
       next();
     });
   });
-
 });
 
 // create a method to compare passwords, using Promise which uses async await when called
@@ -59,7 +59,7 @@ userSchema.methods.comparePassword = function( candidatePassword ) {
       resolve( true );
     });
   });
-});
+};
 
 // creates a mongoose model called User based on the user Schema.
 // When we require this file we can use the User model.
