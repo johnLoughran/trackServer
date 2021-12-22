@@ -10,6 +10,10 @@ const authRoutes = require('./routes/authRoutes');
 const trackRoutes = require('./routes/trackRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
+// NOTE: Remember to open 3 terminals and type:
+// ...track-server$ npm run dev
+// ...tracker$ ngrok http 3000
+// ...tracker$ npm start
 
 const app = express();
 
@@ -22,7 +26,7 @@ app.use(trackRoutes);
 // I got the connection uri from cluod.mongodb.com, edit cluster0, connect
 // I had to replace <password> joxF3h6ovuBcvmYp
 // const uri = "mongodb+srv://johnLoughran:<password>@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/test?retryWrites=true&w=majority";
+const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 //const mongoUri = "mongodb+srv://johnLoughran:joxF3h6ovuBcvmYp@cluster0.97bh1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(mongoUri); // not (mongUri, { useNewUrlParser:true etc. }), used in < v6
